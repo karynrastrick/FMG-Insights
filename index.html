@@ -1,0 +1,332 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,sans-serif)}
+.hdr{padding:1rem 0 0.5rem}
+.hdr h1{font-size:17px;font-weight:500;color:var(--color-text-primary)}
+.hdr p{font-size:12px;color:var(--color-text-secondary);margin-top:3px}
+.tabs{display:flex;gap:4px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:0}
+.tab{font-size:12px;padding:6px 14px;border:none;background:none;color:var(--color-text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit}
+.tab:hover{color:var(--color-text-primary)}
+.tab.active{color:var(--color-text-primary);font-weight:500;border-bottom-color:var(--color-text-primary)}
+.panel{display:none;padding-top:1rem}
+.panel.active{display:block}
+.alert{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:9px 12px;font-size:11.5px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.55}
+.alert strong{color:var(--color-text-primary)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:10px;font-size:11px;align-items:center}
+.leg-item{display:flex;align-items:center;gap:4px;color:var(--color-text-secondary)}
+.ls{width:24px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:11.5px}
+th{font-size:10px;font-weight:500;color:var(--color-text-secondary);padding:5px 6px;text-align:center;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);white-space:nowrap}
+th.lft{text-align:left;min-width:170px}
+td{padding:5px 6px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:middle}
+tr:hover td{background:var(--color-background-secondary)}
+tr.sel td{background:var(--color-background-secondary)}
+.tn{display:flex;align-items:center;gap:7px;cursor:pointer}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tl{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.ts{font-size:10px;color:var(--color-text-secondary);margin-top:1px}
+.hz{font-size:10px;padding:1px 6px;border-radius:8px;display:inline-block;margin-top:2px}
+.cell{display:flex;align-items:center;justify-content:center;border-radius:4px;width:34px;height:24px;font-size:10px;font-weight:600;cursor:pointer;margin:auto}
+.cell:hover{opacity:0.8}
+.VH{background:#0F6E56;color:#E1F5EE}
+.H{background:#1D9E75;color:#E1F5EE}
+.M{background:#9FE1CB;color:#085041}
+.L{background:#DCF5ED;color:#085041}
+.TH{background:#7B2010;color:#FAECE7}
+.TM{background:#D85A30;color:#fff}
+.TL{background:#F5C4B3;color:#712B13}
+.NN{background:var(--color-background-secondary);color:var(--color-text-secondary);font-size:9px}
+.nb{font-size:9px;padding:1px 5px;border-radius:6px;background:#EEEDFE;color:#26215C;margin-left:4px;font-weight:500}
+.ub{font-size:9px;padding:1px 5px;border-radius:6px;background:#FDF3E3;color:#633806;margin-left:4px;font-weight:500}
+.drawer{border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:12px 14px;margin-top:8px;display:none}
+.drawer.open{display:block}
+.dh{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.dt{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.dm{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.dbg{font-size:10px;padding:2px 9px;border-radius:8px;font-weight:500;flex-shrink:0}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.dc{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:9px 11px}
+.dc h5{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px}
+.dc ul{list-style:none}
+.dc li{font-size:11.5px;color:var(--color-text-primary);line-height:1.55;padding:2px 0 2px 10px;position:relative}
+.dc li::before{content:"–";position:absolute;left:0;color:var(--color-text-secondary)}
+.sr{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.sc{font-size:10px;padding:2px 7px;border-radius:8px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.sc-f{border-color:#1D9E75;color:#085041}
+.sc-m{border-color:#378ADD;color:#0C447C}
+.sc-o{border-color:#534AB7;color:#26215C}
+.sc-p{border-color:#D85A30;color:#712B13}
+.sc-r{border-color:#888;color:#444}
+.xb{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:18px;line-height:1;padding:0;font-family:inherit}
+.fn{font-size:11px;color:var(--color-text-secondary);margin-top:8px;border-top:0.5px solid var(--color-border-tertiary);padding-top:7px;line-height:1.5}
+.ri{display:flex;gap:10px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px}
+.rn{min-width:24px;font-weight:500;color:var(--color-text-secondary);flex-shrink:0}
+.rb{flex:1;color:var(--color-text-primary);line-height:1.55}
+.rb a{color:#378ADD;font-size:11px;margin-left:3px}
+.rt{font-size:10px;padding:1px 5px;border-radius:3px;margin-right:3px;font-weight:500}
+.rt-f{background:#E1F5EE;color:#085041}
+.rt-m{background:#E6F1FB;color:#0C447C}
+.rt-o{background:#EEEDFE;color:#26215C}
+.rt-i{background:#FDF3E3;color:#7A4D0E}
+.rt-p{background:#FAECE7;color:#712B13}
+.rt-r{background:#f0f0f8;color:#333}
+</style>
+
+<div class="hdr">
+  <h1>FMG emerging technology — verified insights</h1>
+  <p>12 technologies · All claims sourced to primary documents · Updated May 2026</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('hm')">Heat map</button>
+  <button class="tab" onclick="show('nt')">Technology notes</button>
+  <button class="tab" onclick="show('rf')">References</button>
+</div>
+
+<div class="panel active" id="tab-hm">
+<div class="alert"><strong>What changed:</strong> Agentic AI repositioned to future–near horizon (early-medium NZ maturity). Two new entries added: <strong>Decision intelligence & explainable AI</strong> and <strong>AI fraud & deepfakes</strong>. RBNZ climate risk guidance added as regulatory driver. PwC NZ Insurance Banana Skins 2025 added throughout as NZ-specific primary source.</div>
+
+<div class="legend">
+  <strong style="font-size:11px;color:var(--color-text-primary)">Opportunity:</strong>
+  <span class="leg-item"><span class="ls VH">VH</span>Very high</span>
+  <span class="leg-item"><span class="ls H">H</span>High</span>
+  <span class="leg-item"><span class="ls M">M</span>Medium</span>
+  <span class="leg-item"><span class="ls L">L</span>Low</span>
+  <strong style="font-size:11px;color:var(--color-text-primary);margin-left:6px">Threat:</strong>
+  <span class="leg-item"><span class="ls TH">TH</span>High</span>
+  <span class="leg-item"><span class="ls TM">TM</span>Med</span>
+  <span class="leg-item"><span class="ls TL">TL</span>Low</span>
+</div>
+
+<div class="wrap">
+<table>
+<thead><tr>
+  <th class="lft">Technology</th>
+  <th>FMG<br>signal</th>
+  <th>NZ<br>market</th>
+  <th>Claims<br>opp.</th>
+  <th>Underwriting<br>opp.</th>
+  <th>Member<br>value</th>
+  <th>Competitive<br>threat</th>
+  <th>Regulatory<br>risk</th>
+  <th>Maturity<br>NZ 2026</th>
+</tr></thead>
+<tbody id="tb"></tbody>
+</table>
+</div>
+<div class="fn">Click any row to see sourced evidence and recommended actions. <span class="nb">NEW</span> = added this version. <span class="ub">UPDATED</span> = positioning changed.</div>
+<div class="drawer" id="drw"></div>
+</div>
+
+<div class="panel" id="tab-nt"><div id="nt-list"></div></div>
+<div class="panel" id="tab-rf"><div id="rf-list"></div></div>
+
+<script>
+const T=[
+  {name:"AI claims & underwriting",dot:"#378ADD",hz:"Immediate",tag:"",
+   bb:"#FAECE7",bc:"#712B13",bl:"Threat",
+   meta:"Immediate · McKinsey Jul 2025 · Deloitte NZ 2026 · PwC NZ 2025",
+   sc:{fmg:"H",nz:"H",cl:"VH",uw:"VH",mv:"H",ct:"TH",rr:"TM",mt:"H"},
+   why:["Aviva: 80+ AI models, £60m saved in motor claims in 2024 — the competitive benchmark","IAG NZ: FRISS analytics 47% productivity gain — FMG's direct NZ competitor already deploying","McKinsey: AI leaders created 6.1× TSR of laggards over 5 years — the gap is already compounding","PwC NZ Banana Skins 2025: AI named as both top risk and top opportunity for NZ insurers","McKinsey: domain-level AI lifts bottom line double digits; isolated pilots do not move the needle"],
+   do:["Prioritise claims triage as first AI domain — highest impact, lowest member-facing risk","Adopt domain-wide transformation, not scattered use cases — McKinsey is explicit on this","Hybrid build/buy: buy for corporate functions, build where FMG rural data is proprietary IP","Map FMG's claims domain into AI subdomains before any vendor engagement","Budget equally for adoption and change management as for technology development"],
+   src:[["McKinsey Jul 2025","sc-m"],["Deloitte NZ 2026","sc-i"],["PwC NZ Banana Skins 2025","sc-p"],["Mordor Intelligence 2025","sc-i"]]},
+
+  {name:"Cloud core (Guidewire)",dot:"#1D9E75",hz:"Immediate",tag:"",
+   bb:"#E1F5EE",bc:"#085041",bl:"Opportunity",
+   meta:"Underway · FMG Jun 2024 · McKinsey Jul 2025",
+   sc:{fmg:"H",nz:"H",cl:"H",uw:"H",mv:"M",ct:"NN",rr:"TL",mt:"H"},
+   why:["FMG CEO post-Cyclone Gabrielle: 'enable FMG to respond quickly when we face another event of scale'","McKinsey: modern data and tech stack is the prerequisite for any AI transformation — this is it","Tower NZ: cloud-native core captures 60% of digital new business — the competitive benchmark","IntegrationWorks: microservices now enable client self-service across FMG Connect (79,221 users)","Guidewire AI models analyse 60M+ claims globally — FMG accesses this on cloud"],
+   do:["Ensure Guidewire roadmap includes parametric product capability and IoT data ingestion","Use cloud migration to resolve legacy data quality — clean data is half the AI challenge","Define AI data governance policy as part of the design, not as an afterthought","Map which FMG domains will be AI-transformed first, in deliberate sequence","Track Guidewire Autopilot AI features as near-term claims automation capabilities"],
+   src:[["FMG Jun 2024","sc-f"],["McKinsey Jul 2025","sc-m"],["IntegrationWorks Jun 2024","sc-i"]]},
+
+  {name:"Risk-based pricing",dot:"#BA7517",hz:"Immediate",tag:"",
+   bb:"#EEEDFE",bc:"#26215C",bl:"Both",
+   meta:"Mutual tension · OECD 2025 · FMG Dec 2024 · PwC NZ 2025",
+   sc:{fmg:"H",nz:"H",cl:"L",uw:"VH",mv:"M",ct:"TH",rr:"TH",mt:"H"},
+   why:["OECD 2025: NZ home insurance prices rose 22.4% in 2024 — second highest in the OECD","PwC NZ Banana Skins 2025: insurance affordability named as top NZ industry risk","FMG explicitly names risk-based pricing as a key trend the mutual model must actively manage","AA Insurance paused new policies in Westport — leading indicator of where unchecked pricing leads","Council of Financial Regulators affordability review underway — regulatory intervention is possible"],
+   do:["Articulate FMG's mutual pricing philosophy explicitly — it is a genuine market differentiator","Use AI to improve pricing precision without abandoning community cross-subsidy commitments","Parametric add-ons reduce per-event claims cost — direct link to maintaining premium affordability","Engage visibly in the Council of Financial Regulators' affordability review","Develop a public mutual pricing commitment to pre-empt regulatory pressure"],
+   src:[["OECD 2025","sc-o"],["FMG Dec 2024","sc-f"],["PwC NZ Banana Skins 2025","sc-p"],["Deloitte NZ 2026","sc-i"]]},
+
+  {name:"Hybrid rural advice",dot:"#1D9E75",hz:"Immediate",tag:"",
+   bb:"#E1F5EE",bc:"#085041",bl:"Opportunity",
+   meta:"Immediate · McKinsey Global Insurance 2025 · FMG Dec 2024",
+   sc:{fmg:"H",nz:"H",cl:"M",uw:"M",mv:"VH",ct:"TM",rr:"TM",mt:"H"},
+   why:["FMG has 30 regional offices — AI-assisted advice extends consistent quality across all locations","McKinsey: rural areas have fewer advisers per capita — the advice gap is structural, not temporary","Hybrid model: AI handles routine needs, humans focus on complex high-value conversations","FMG Connect: 79,221 users — digital engagement base exists; advice layer is the next step","AI personalisation enables small rural businesses to access underwriting previously uneconomic"],
+   do:["Design AI tools that prepare advisers before farm visits — risk summaries, coverage gaps, member history","Pilot AI-assisted advice in highest-volume rural segments first — dairy or arable","Frame to members as adviser empowerment, not replacement — mutual values must lead the story","Build digital literacy programme for rural advisers as part of change management","Your organisational change expertise is the direct differentiator here — bring it explicitly"],
+   src:[["FMG Dec 2024","sc-f"],["McKinsey Global Insurance 2025","sc-m"],["FMG Annual Report 2025","sc-f"]]},
+
+  {name:"Decision intelligence & explainable AI",dot:"#534AB7",hz:"Immediate–near",tag:"NEW",
+   bb:"#EEEDFE",bc:"#26215C",bl:"Both",
+   meta:"NEW · Immediate-near · PwC NZ 2025 · McKinsey Jul 2025",
+   sc:{fmg:"M",nz:"M",cl:"H",uw:"H",mv:"VH",ct:"TM",rr:"TH",mt:"M"},
+   why:["For a mutual insurer, AI decisions that cannot be explained to members erode the trust the business is built on","PwC NZ: AI governance and explainability named as a critical risk management requirement for NZ insurers","McKinsey: 'AI control tower' ensuring governance and tracking AI value creation is essential at enterprise scale","RBNZ and FMA trajectory: explainable AI in financial advice is becoming a regulatory expectation","FMG's B Corp obligations make responsible, explainable AI a values commitment, not just compliance"],
+   do:["Build explainability requirements into every AI use case from design stage — not retrofitted later","Define what 'good explanation' looks like for a rural adviser talking to a farmer about a claims decision","Include explainable AI standards in FMG's AI governance policy alongside agentic AI planning","Ensure Guidewire Cloud AI models include explainability outputs FMG advisers can actually use","Direct link to your experience building AI governance frameworks — bring this explicitly in the interview"],
+   src:[["PwC NZ Banana Skins 2025","sc-p"],["McKinsey Jul 2025","sc-m"],["RBNZ Climate Risk Guidance 2024","sc-r"]]},
+
+  {name:"Parametric + climate AI",dot:"#0F6E56",hz:"Near",tag:"",
+   bb:"#E1F5EE",bc:"#085041",bl:"Opportunity",
+   meta:"FMG active · FMG Nov 2025 · OECD 2025 · IAIS Dec 2024",
+   sc:{fmg:"VH",nz:"M",cl:"H",uw:"H",mv:"H",ct:"TL",rr:"M",mt:"M"},
+   why:["FMG piloted NZ-wide rainfall parametric, paused for basis risk, committed to continue on other perils","OECD 2025: global insured catastrophe losses USD 137B in 2024 — structural stress on indemnity model","IAIS Dec 2024: parametric fills protection gaps where indemnity is too slow or too expensive","Satellite SAR and IoT sensors enable field-level triggers within 72 hours of a weather event","Global parametric market growing 11%+ CAGR — moving from niche experiment to mainstream product"],
+   do:["Target horticulture or arable for next pilot — crop-specific triggers more granular than NZ-wide data","Commission actuarial analysis of FMG weather claims to identify top 3 parametric-suitable perils","Use Guidewire Cloud to ingest satellite and IoT farm weather data at scale","Design parametric as complement to indemnity — blended structures are the emerging standard","Educate rural advisers on basis risk — honest member communication is essential to trust"],
+   src:[["FMG Nov 2025","sc-f"],["OECD 2025","sc-o"],["IAIS Dec 2024","sc-r"],["Farmonaut 2025","sc-i"]]},
+
+  {name:"Geospatial & climate risk intelligence",dot:"#0F6E56",hz:"Near",tag:"UPDATED",
+   bb:"#E1F5EE",bc:"#085041",bl:"Opportunity",
+   meta:"UPDATED — RBNZ regulatory signal added · Near · RBNZ 2024 · FMG CRD 2025",
+   sc:{fmg:"H",nz:"M",cl:"H",uw:"H",mv:"M",ct:"TM",rr:"TH",mt:"M"},
+   why:["RBNZ Mar 2024: guidance requiring licensed insurers to improve climate-related risk management — regulatory obligation, not optional","FMG CRD FY24/25: active investment in flood and natural hazards modelling confirmed","Deloitte NZ 2026: geospatial analytics, satellite imagery and IoT sensors are practical tools for real-time loss prevention","PwC NZ Banana Skins 2025: climate named as top-three risk for NZ insurers alongside AI and cybercrime","Combines claims, location, hazard, weather, satellite and farm-context data for underwriting and reinsurance"],
+   do:["Use RBNZ guidance as the business case driver — this is now a regulatory requirement, not just strategy","Integrate geospatial risk intelligence directly into Guidewire Cloud underwriting workflows","Commission farm-level flood and drought risk mapping for FMG's highest-exposure portfolios","Share geospatial insights with members as a value-add — prevention framing, not just pricing","Engage with MPI and NIWA on primary sector climate data — FMG could be a valued data partner"],
+   src:[["RBNZ Climate Risk Guidance 2024","sc-r"],["FMG CRD 2025","sc-f"],["Deloitte NZ 2026","sc-i"],["PwC NZ Banana Skins 2025","sc-p"]]},
+
+  {name:"Cyber & digital risk",dot:"#993C1D",hz:"Immediate",tag:"",
+   bb:"#FAECE7",bc:"#712B13",bl:"Threat",
+   meta:"PwC NZ & OECD top-3 risk · PwC NZ 2025 · OECD 2025",
+   sc:{fmg:"H",nz:"H",cl:"M",uw:"M",mv:"M",ct:"TH",rr:"TH",mt:"H"},
+   why:["PwC NZ Banana Skins 2025: cybercrime named as top-three risk for NZ insurers specifically","OECD 2025: cyber risk cited by 55%+ of national authorities as material insurance sector vulnerability","Deloitte NZ 2026: AI adoption and cloud infrastructure widen cybersecurity attack surfaces","FMG's Guidewire Cloud migration increases digital attack surface — active management required","NZ farms are IoT-connected — automated milking, GPS tractors — largely uninsured cyber exposure"],
+   do:["Commission gap analysis: what cyber losses do FMG rural business members currently absorb uninsured?","Ensure Guidewire Cloud migration includes explicit cyber resilience architecture review","Include cyber exposure in rural adviser farm visit conversations — whole-farm risk framing","Explore white-label or reinsurance-backed cyber product for rural SME clients","Monitor NZ regulatory trajectory on digital operational resilience"],
+   src:[["PwC NZ Banana Skins 2025","sc-p"],["OECD 2025","sc-o"],["Deloitte NZ 2026","sc-i"],["FMG CRD 2025","sc-f"]]},
+
+  {name:"IoT & precision agri-telematics",dot:"#1D9E75",hz:"Near",tag:"",
+   bb:"#E1F5EE",bc:"#085041",bl:"Opportunity",
+   meta:"Near · Frontiers Sustainable Food Systems 2026",
+   sc:{fmg:"M",nz:"M",cl:"M",uw:"H",mv:"H",ct:"TL",rr:"M",mt:"M"},
+   why:["32 billion IoT devices worldwide by 2030 — farm connectivity accelerating rapidly in NZ","Soil moisture, livestock health and microclimate sensors enable real-time underwriting signals","NZ emissions measurement requirements create IoT infrastructure FMG can leverage for risk data","Academic research confirms IoT + AI + satellite data improves pricing accuracy and claims speed","Reduces information asymmetry — enables risk pricing that rewards good farm operators"],
+   do:["Pilot telematic discount programme for dairy farmers with approved monitoring systems","Integrate with farm management software (LIC, Figured) via API for passive data collection","Define data governance policy — members own their data, FMG uses it for pricing with consent only","Build actuarial capability to incorporate IoT signals into pricing models","Align IoT data ingestion with FMG Connect roadmap as the aggregation layer"],
+   src:[["Frontiers Sustainable Food Systems 2026","sc-i"],["Vonage AI Insurance 2026","sc-i"],["Wipfli 2026","sc-i"]]},
+
+  {name:"Agentic AI",dot:"#534AB7",hz:"Future–near",tag:"UPDATED",
+   bb:"#EEEDFE",bc:"#26215C",bl:"Both",
+   meta:"UPDATED — repositioned future-near for NZ · McKinsey Jul 2025 · KPMG 2025",
+   sc:{fmg:"M",nz:"L",cl:"H",uw:"H",mv:"H",ct:"TH",rr:"TH",mt:"L"},
+   why:["McKinsey: leading North American insurer already running full underwriting workflow through agentic agents","KPMG AI Pulse 2025: agentic AI deployment quadrupling; governance, data readiness and workforce upskilling are the keys","PwC 2026: agentic workflows spreading faster than governance — risk if FMG does not design frameworks now","FMG's 120 years of rural risk knowledge = proprietary training data no vendor can replicate","Maturity repositioned: future-near for NZ — design architecturally now, deploy 2027–28"],
+   do:["Document implicit adviser and underwriter judgments now — future training data and proprietary IP","Include agentic architecture in Guidewire Cloud design brief — this is an architectural decision today","Build AI governance policy before deployment — B Corp and mutual obligations make this non-negotiable","Pilot narrow agentic workflow in claims triage first — lower risk, measurable, builds confidence","Interview insight: design for it now precisely because deployment is 18–36 months away"],
+   src:[["McKinsey Jul 2025","sc-m"],["KPMG AI Pulse 2025","sc-i"],["PwC AI Predictions 2026","sc-p"],["FMG Annual Report 2025","sc-f"]]},
+
+  {name:"Embedded & open insurance",dot:"#993C1D",hz:"Near",tag:"",
+   bb:"#FAECE7",bc:"#712B13",bl:"Threat",
+   meta:"Watch · OECD Insurance Digitalisation",
+   sc:{fmg:"M",nz:"M",cl:"L",uw:"M",mv:"M",ct:"TH",rr:"TM",mt:"M"},
+   why:["Farm management platforms (Figured, Xero AgriMaster) could embed insurance — bypassing FMG advisers","Open banking regulatory trajectory in NZ suggests open insurance regulation is coming","InsurTech entrants use open APIs to offer frictionless rural cover at point-of-purchase","NZ-UAE CEPA 2025 may bring new insurtechs into NZ agricultural insurance market","FMG's relationship model is a moat — but only if digitally accessible alongside embedded alternatives"],
+   do:["Develop a documented API strategy for FMG Connect — define what to open and to whom","Build integrations with major farm management software before competitors do","Assess partnership with rural banking (BNZ Rural, Rabobank) for embedded cover at loan origination","Monitor Australian open insurance regulatory development as NZ leading indicator","Ensure FMG brand and mutual story is prominent in any embedded channel"],
+   src:[["OECD Insurance Digitalisation","sc-o"],["Mordor Intelligence 2025","sc-i"],["openkoda.com 2026","sc-i"]]},
+
+  {name:"AI fraud & deepfakes",dot:"#993C1D",hz:"Immediate–near",tag:"NEW",
+   bb:"#FAECE7",bc:"#712B13",bl:"Threat",
+   meta:"NEW · High threat signal · PwC NZ 2025 · PwC Global 2026",
+   sc:{fmg:"M",nz:"M",cl:"TH",uw:"M",mv:"M",ct:"TH",rr:"TM",mt:"M"},
+   why:["PwC NZ Banana Skins 2025: AI-enabled fraud explicitly named as an emerging risk for NZ insurers","Synthetic documents, manipulated images, voice cloning and fake identities challenge digital claims models","FMG's shift to digital claims and FMG Connect remote service increases exposure to this risk","PwC Global 2026: agentic AI creates new attack vectors — AI systems can be manipulated as well as humans","Rural claims often involve remote assessment — reduced in-person verification increases fraud surface"],
+   do:["Integrate AI fraud detection into Guidewire Cloud claims workflow from day one of deployment","Define fraud detection requirements alongside AI claims triage design — not as a separate workstream","Brief rural advisers on emerging AI fraud signals — voice cloning scams targeting farmers are a real risk","Ensure FMG Connect digital claims submission includes appropriate identity verification steps","Monitor NZ Police and CERT NZ advisories on AI-enabled fraud as early warning signals"],
+   src:[["PwC NZ Banana Skins 2025","sc-p"],["PwC AI Predictions 2026","sc-p"],["Deloitte NZ 2026","sc-i"]]}
+];
+
+const REFS=[
+  {id:1,t:"f",c:"FMG. 'Te Ara Tika 2030.' fmg.co.nz, March 2026.",u:"https://www.fmg.co.nz/about-fmg/news/te-ara-tika-2030-the-way-forward"},
+  {id:2,t:"f",c:"FMG. 'Adapting to the Future.' Lucie Douma. December 2024.",u:"https://www.fmg.co.nz/about-fmg/news/adapting-to-the-future"},
+  {id:3,t:"f",c:"FMG. 'Next Steps for Parametric Insurance at FMG.' November 2025.",u:"https://www.fmg.co.nz/about-fmg/news/next-steps-for-parametric-insurance-at-fmg"},
+  {id:4,t:"f",c:"FMG. Climate-Related Disclosures FY24/25. June 2025.",u:"https://www.fmg.co.nz/__data/assets/pdf_file/0014/163121/Climate-related-disclosures-2025.pdf"},
+  {id:5,t:"f",c:"FMG & Guidewire. 'FMG Selects Guidewire Cloud.' June 2024.",u:"https://ir.guidewire.com/news-releases/news-release-details/fmg-selects-guidewire-cloud-maximise-agility-and-support"},
+  {id:6,t:"m",c:"Milinkovich et al. 'The Future of AI in the Insurance Industry.' McKinsey Financial Services Practice, July 2025.",u:"https://www.mckinsey.com/industries/financial-services/our-insights/the-future-of-ai-in-the-insurance-industry"},
+  {id:7,t:"o",c:"OECD. Global Insurance Market Trends 2025. https://doi.org/10.1787/0d11ecf4-en.",u:"https://doi.org/10.1787/0d11ecf4-en"},
+  {id:8,t:"i",c:"Deloitte NZ. 'Global Trends, Local Responses: NZ Insurance Industry 2026.' February 2026.",u:"https://www.deloitte.com/nz/en/Industries/insurance/perspectives/global-trends-local-responses-influencing-new-zealand-insurance-industry-2026.html"},
+  {id:9,t:"i",c:"Marsh NZ. 'New Zealand Insurance Market Update 2026.'",u:"https://www.nz.marsh.com/about-us/news-and-articles/new-zealand-insurance-market-update.html"},
+  {id:10,t:"p",c:"PwC NZ. 'New Zealand Insurance Banana Skins 2025.' pwc.co.nz.",u:"https://www.pwc.co.nz/insights-and-publications/2025-publications/new-zealand-insurance-banana-skins-2025.html"},
+  {id:11,t:"p",c:"PwC Global. 'AI Predictions 2026.' pwc.com.",u:"https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-predictions.html"},
+  {id:12,t:"r",c:"Reserve Bank of New Zealand. 'Guidance on Managing Climate-Related Risks.' March 2024.",u:"https://www.rbnz.govt.nz/news-and-events/news/2024/03/guidance-issued-on-managing-climate-related-risks"},
+  {id:13,t:"r",c:"IAIS / BIS FSI. 'Insights on Parametric Insurance.' December 2024.",u:"https://www.iais.org/uploads/2024/12/FSI-IAIS-Insights-on-parametric-insurance.pdf"},
+  {id:14,t:"i",c:"IntegrationWorks / ITBrief. 'IntegrationWorks Transform FMG Rural Insurance Processes.' June 2024.",u:"https://itbrief.co.nz/story/integrationworks-transform-fmg-s-rural-insurance-processes"},
+  {id:15,t:"i",c:"Mordor Intelligence. 'NZ Property & Casualty Insurance Market Report 2030.' June 2025.",u:"https://www.mordorintelligence.com/industry-reports/property-casualty-insurance-market-in-new-zealand"},
+  {id:16,t:"i",c:"KPMG. 'AI Quarterly Pulse Survey 2025.'",u:"https://kpmg.com/us/en/articles/2025/ai-quarterly-pulse-survey.html"},
+  {id:17,t:"i",c:"Frontiers in Sustainable Food Systems. 'AI and Satellite Data in Agricultural Insurance.' 2026.",u:"https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fsufs.2026.1730243/full"},
+  {id:18,t:"i",c:"Swiss Re Institute. Sigma 1/2025: Natural Catastrophes. 2025.",u:"https://www.swissre.com/institute/research/sigma-research/sigma-2025-01-natural-catastrophes-trend.html"},
+  {id:19,t:"i",c:"Send Technology. 'Top 10 Insurance Underwriting Trends 2026.' January 2026.",u:"https://send.technology/resources/blog/top-10-insurance-industry-trends-shaping-underwriting-in-2026/"},
+  {id:20,t:"i",c:"Wipfli. '2026 Insurance Industry Trends: AI, But Make It People-First.' 2026.",u:"https://www.wipfli.com/insights/articles/2026-insurance-industry-trends-ai-but-make-it-people-first"},
+  {id:21,t:"i",c:"Insurance Business NZ. 'Government Mulls Insurance Affordability Steps.' February 2026.",u:"https://www.insurancebusinessmag.com/nz/news/breaking-news/government-mulls-insurance-affordability-steps-amid-rising-premium-burdens-563918.aspx"},
+  {id:22,t:"i",c:"Farmonaut. 'Agriculture Crop Insurance 2025: Smart AI Parametric.' 2025.",u:"https://farmonaut.com/blogs/agriculture-crop-insurance-2025-smart-ai-parametric"}
+];
+
+const HZ_BG={"Immediate":"#E1F5EE","Immediate–near":"#DCF5ED","Near":"#FDF3E3","Future–near":"#EEEDFE","Future":"#f0f0ff"};
+const HZ_TX={"Immediate":"#085041","Immediate–near":"#085041","Near":"#633806","Future–near":"#26215C","Future":"#333"};
+const COLS=["fmg","nz","cl","uw","mv","ct","rr","mt"];
+
+function cls(v){
+  const map={VH:"VH",H:"H",M:"M",L:"L",TH:"TH",TM:"TM",TL:"TL"};
+  return map[v]||"NN";
+}
+function lbl(v){return v==="NN"?"—":v;}
+
+let open=-1;
+
+function buildTable(){
+  document.getElementById("tb").innerHTML=T.map((t,i)=>{
+    const cells=COLS.map(k=>{
+      const v=t.sc[k]||"NN";
+      return`<td><div class="cell ${cls(v)}" onclick="tog(${i})">${lbl(v)}</div></td>`;
+    }).join("");
+    const tag=t.tag==="NEW"?`<span class="nb">NEW</span>`:t.tag==="UPDATED"?`<span class="ub">UPD</span>`:"";
+    return`<tr id="r${i}" onclick="tog(${i})" style="cursor:pointer">
+      <td><div class="tn"><div class="dot" style="background:${t.dot}"></div>
+      <div><div class="tl">${t.name}${tag}</div>
+      <span class="hz" style="background:${HZ_BG[t.hz]||"#f5f4f0"};color:${HZ_TX[t.hz]||"#333"}">${t.hz}</span>
+      </div></div></td>${cells}</tr>`;
+  }).join("");
+}
+
+function tog(i){
+  const d=document.getElementById("drw");
+  if(open===i){open=-1;d.classList.remove("open");document.querySelectorAll("tr[id^='r']").forEach(r=>r.classList.remove("sel"));return;}
+  open=i;
+  document.querySelectorAll("tr[id^='r']").forEach(r=>r.classList.remove("sel"));
+  document.getElementById("r"+i).classList.add("sel");
+  const t=T[i];
+  const tag=t.tag==="NEW"?`<span class="nb">NEW</span>`:t.tag==="UPDATED"?`<span class="ub">UPDATED</span>`:"";
+  d.innerHTML=`<div class="dh">
+    <div><div class="dt">${t.name} ${tag}</div><div class="dm">${t.meta}</div></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="dbg" style="background:${t.bb};color:${t.bc}">${t.bl}</span>
+      <button class="xb" onclick="event.stopPropagation();tog(${i})">×</button>
+    </div></div>
+    <div class="dg">
+      <div class="dc"><h5>Why it matters for FMG</h5><ul>${t.why.map(w=>`<li>${w}</li>`).join("")}</ul></div>
+      <div class="dc"><h5>What FMG should do now</h5><ul>${t.do.map(a=>`<li>${a}</li>`).join("")}</ul></div>
+    </div>
+    <div class="sr">${t.src.map(s=>`<span class="sc ${s[1]}">${s[0]}</span>`).join("")}</div>`;
+  d.classList.add("open");
+  d.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function buildNotes(){
+  document.getElementById("nt-list").innerHTML=T.map((t,i)=>`
+    <div style="border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:11px 13px;margin-bottom:7px;cursor:pointer" onclick="show('hm');setTimeout(()=>tog(${i}),80)">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
+        <div class="dot" style="background:${t.dot}"></div>
+        <span class="tl">${t.name}</span>
+        ${t.tag==="NEW"?`<span class="nb">NEW</span>`:t.tag==="UPDATED"?`<span class="ub">UPD</span>`:""}
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:${t.bb};color:${t.bc};margin-left:auto">${t.bl}</span>
+      </div>
+      <p style="font-size:11.5px;color:var(--color-text-secondary);line-height:1.6">${t.why[0]}</p>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin-top:3px">→ ${t.do[0]}</p>
+    </div>`).join("");
+}
+
+function buildRefs(){
+  const tm={f:"rt-f",m:"rt-m",o:"rt-o",i:"rt-i",p:"rt-p",r:"rt-r"};
+  const tl={f:"FMG",m:"McKinsey",o:"OECD",i:"Industry",p:"PwC",r:"Regulatory"};
+  document.getElementById("rf-list").innerHTML=REFS.map(r=>`
+    <div class="ri"><div class="rn">[${r.id}]</div>
+    <div class="rb"><span class="rt ${tm[r.t]}">${tl[r.t]}</span>${r.c}<a href="${r.u}" target="_blank">↗</a></div></div>`).join("");
+}
+
+function show(n){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelector(`.tab[onclick="show('${n}')"]`).classList.add("active");
+  document.getElementById("tab-"+n).classList.add("active");
+  if(n==="nt")buildNotes();
+  if(n==="rf")buildRefs();
+}
+
+buildTable();
+</script>
